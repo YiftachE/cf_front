@@ -14,14 +14,17 @@ class CreateCampaign extends Component {
       uploadCsvToggle : true,
       runningMethodState : 'keyword',
       countryListValue: 1,
+      createVideoToggle : false,
     }
 
     this.handleFile = this.handleFile.bind(this);
     this.runningMethodChange = this.runningMethodChange.bind(this);
     this.handleCountryChange = this.handleCountryChange.bind(this);
+    this.handleVideoToggle = this.handleVideoToggle.bind(this);
+    this.handleUploadToggle = this.handleUploadToggle.bind(this)
   }
 
-  handleToggle = () => {
+  handleUploadToggle = () => {
     this.setState({
        uploadCsvToggle : !this.state.uploadCsvToggle
     });
@@ -38,6 +41,8 @@ class CreateCampaign extends Component {
   }
 
   handleCountryChange = (event, index, value) => this.setState({countryListValue:value});
+
+  handleVideoToggle = () => this.setState({createVideoToggle: !this.state.createVideoToggle});
 
   render() {
 
@@ -131,7 +136,7 @@ class CreateCampaign extends Component {
               label="upload csv file"
               style={styles.toggle}
               toggle = {this.state.uploadCsvToggle}
-              onToggle= {this.handleToggle.bind(this)}
+              onToggle= {this.handleUploadToggle}
             />
             <div>
               {this.state.uploadCsvToggle ?
@@ -223,6 +228,43 @@ class CreateCampaign extends Component {
             hintText="Message title"
             floatingLabelText="Message title"
           />
+          </div>
+          <Divider/>
+        </div>
+
+        <div>
+          <Subheader style={{paddingLeft: '45%'}}>Message</Subheader>
+
+          <TextField
+            hintText="Message / Comment / Inquiry"
+            multiLine={true}
+            rows={8}
+            rowsMax={20}
+          />
+          <br />
+          <Divider/>
+        </div>
+
+        <div>
+          <Subheader style={{paddingLeft: '45%'}}>Create a video</Subheader>
+          <Toggle
+            label="create a video"
+            style={styles.toggle}
+            toggle = {this.state.createVideoToggle}
+            onToggle= {this.handleVideoToggle}
+          />
+          <Divider/>
+        </div>
+
+        <div>
+          <Subheader style={{paddingLeft: '45%'}}>Black list</Subheader>
+          <div style={{marginLeft: '40%'}}>
+            <TextField
+              hintText="Black list"
+              floatingLabelText="Black list"
+            />
+            <br />
+            /*black list sites: {this.blacklisted}*/
           </div>
           <Divider/>
         </div>
