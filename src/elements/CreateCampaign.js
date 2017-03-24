@@ -4,17 +4,21 @@ import Divider from 'material-ui/Divider';
 import TextField from 'material-ui/TextField';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import Toggle from 'material-ui/Toggle';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 class CreateCampaign extends Component {
   constructor(){
     super();
     this.state = {
       uploadCsvToggle : true,
-      runningMethodState : null,
+      runningMethodState : 'keyword',
+      countryListValue: 1,
     }
 
     this.handleFile = this.handleFile.bind(this);
     this.runningMethodChange = this.runningMethodChange.bind(this);
+    this.handleCountryChange = this.handleCountryChange.bind(this);
   }
 
   handleToggle = () => {
@@ -32,6 +36,8 @@ class CreateCampaign extends Component {
       runningMethodState : value
     });
   }
+
+  handleCountryChange = (event, index, value) => this.setState({countryListValue:value});
 
   render() {
 
@@ -104,7 +110,6 @@ class CreateCampaign extends Component {
              defaultSelected="keyword"
              onChange={this.runningMethodChange}
              >
-
            <RadioButton
              value="keyword"
              label="Run with keyword"
@@ -148,6 +153,80 @@ class CreateCampaign extends Component {
             <Divider/>
           </div>
         : null}
+        <div>
+          <Subheader style={{paddingLeft: '45%'}}>Contact Info</Subheader>
+          <div style={{marginLeft: '40%'}}>
+            <TextField
+              hintText="First name"
+              floatingLabelText="first name"
+            />
+            <br />
+            <TextField
+              hintText="Last name"
+              floatingLabelText="Last name"
+            />
+            <br />
+            <TextField
+              hintText="email"
+              floatingLabelText="email"
+            />
+            <br />
+            <TextField
+              hintText="phone number"
+              floatingLabelText="phone number"
+            />
+            <br />
+            <TextField
+              hintText="company"
+              floatingLabelText="company"
+            />
+            <br />
+            <TextField
+              hintText="address"
+              floatingLabelText="address"
+            />
+            <br />
+            <TextField
+              hintText="city"
+              floatingLabelText="city"
+            />
+            <br />
+            <SelectField
+              floatingLabelText="Country"
+              value={this.state.countryListValue}
+              onChange={this.handleCountryChange}
+            >
+              <MenuItem value={1} primaryText="Israel" />
+              <MenuItem value={2} primaryText="United Kingdom" />
+              <MenuItem value={3} primaryText="United States" />
+              <MenuItem value={4} primaryText="Brazil" />
+              <MenuItem value={5} primaryText="Australia" />
+            </SelectField>
+          </div>
+          <Divider/>
+        </div>
+
+        <div>
+          <Subheader style={{paddingLeft: '45%'}}>Advanced</Subheader>
+          <div style={{marginLeft:'40%'}}>
+          <TextField
+            hintText="URL"
+            floatingLabelText="URL"
+          />
+          <br />
+          <TextField
+            hintText="Job"
+            floatingLabelText="Job"
+          />
+          <br />
+          <TextField
+            hintText="Message title"
+            floatingLabelText="Message title"
+          />
+          </div>
+          <Divider/>
+        </div>
+
       </div>
     );
   }
