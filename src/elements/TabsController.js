@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import CampaignSelecter from './CampaignSelecter';
+import CreateCampaign from './CreateCampaign';
+
 class TabsController extends Component {
   constructor(){
     super();
@@ -27,7 +29,7 @@ class TabsController extends Component {
             </div>
           </Tab>
           <Tab label="Create New Campaign" >
-
+            <CreateCampaign/>
           </Tab>
           <Tab label="Edit Campaign" >
 
