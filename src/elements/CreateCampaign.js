@@ -234,14 +234,16 @@ class CreateCampaign extends Component {
 
         <div>
           <Subheader style={{paddingLeft: '45%'}}>Message</Subheader>
-
-          <TextField
-            hintText="Message / Comment / Inquiry"
-            multiLine={true}
-            rows={8}
-            rowsMax={20}
-          />
-          <br />
+          <div style={{marginLeft: '40%'}}>
+            <TextField
+              hintText="Message / Comment / Inquiry"
+              floatingLabelText="Message / Comment / Inquiry"
+              multiLine={true}
+              rows={8}
+              rowsMax={20}
+            />
+            <br />
+          </div>
           <Divider/>
         </div>
 
