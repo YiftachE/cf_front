@@ -6,6 +6,8 @@ import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import Toggle from 'material-ui/Toggle';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import config from '../config';
+import axios from 'axios';
 
 class CreateCampaign extends Component {
   constructor(){
@@ -15,13 +17,21 @@ class CreateCampaign extends Component {
       runningMethodState : 'keyword',
       countryListValue: 1,
       createVideoToggle : false,
+      countries: [],
     }
 
     this.handleFile = this.handleFile.bind(this);
     this.runningMethodChange = this.runningMethodChange.bind(this);
     this.handleCountryChange = this.handleCountryChange.bind(this);
     this.handleVideoToggle = this.handleVideoToggle.bind(this);
-    this.handleUploadToggle = this.handleUploadToggle.bind(this)
+    this.handleUploadToggle = this.handleUploadToggle.bind(this);
+  }
+
+  componentWillMount(){
+    var that = this;
+    axios.get(config.external.countries)
+    .then((res) => that.setState({countries: res.data.countries}))
+    .catch((err) => console.error(err));
   }
 
   handleUploadToggle = () => {
@@ -142,7 +152,7 @@ class CreateCampaign extends Component {
               {this.state.uploadCsvToggle ?
                 <TextField hintText="enter search words..." style={{marginLeft: '40%'}}/>
                 :
-                <input type="file" accept=".csv" onChange={this.handleFile()} ref='csvFile'/>
+                <input type="file" accept=".csv" onChange={this.handleFile} ref='csvFile'/>
               }
 
             </div>
@@ -154,7 +164,7 @@ class CreateCampaign extends Component {
         {this.state.runningMethodState === "list websites" ?
           <div>
             <Subheader style={{paddingLeft: '45%'}}>upload websites</Subheader>
-              <input type="file" accept=".csv" onChange={this.handleFile()} ref='csvFile'/>
+              <input type="file" accept=".csv" onChange={this.handleFile} ref='csvFile'/>
             <Divider/>
           </div>
         : null}
@@ -201,11 +211,10 @@ class CreateCampaign extends Component {
               value={this.state.countryListValue}
               onChange={this.handleCountryChange}
             >
-              <MenuItem value={1} primaryText="Israel" />
-              <MenuItem value={2} primaryText="United Kingdom" />
-              <MenuItem value={3} primaryText="United States" />
-              <MenuItem value={4} primaryText="Brazil" />
-              <MenuItem value={5} primaryText="Australia" />
+              {
+                this.state.countries.map((country, index) =>
+                <MenuItem value={index} primaryText={country} />
+              )}
             </SelectField>
           </div>
           <Divider/>
