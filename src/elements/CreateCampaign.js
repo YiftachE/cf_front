@@ -8,6 +8,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import config from '../config';
 import axios from 'axios';
+import connectionHandler from '../services/connectionHandler';
 
 class CreateCampaign extends Component {
   constructor(){
@@ -32,6 +33,8 @@ class CreateCampaign extends Component {
     axios.get(config.external.countries)
     .then((res) => that.setState({countries: res.data.countries}))
     .catch((err) => console.error(err));
+
+    connectionHandler.saveCampaign();
   }
 
   handleUploadToggle = () => {
@@ -213,7 +216,7 @@ class CreateCampaign extends Component {
             >
               {
                 this.state.countries.map((country, index) =>
-                <MenuItem value={index} primaryText={country} />
+                <MenuItem key={country} value={index} primaryText={country} />
               )}
             </SelectField>
           </div>
