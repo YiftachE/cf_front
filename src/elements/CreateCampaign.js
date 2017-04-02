@@ -3,11 +3,16 @@ import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import TextField from 'material-ui/TextField';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import SendIcon from 'material-ui/svg-icons/content/send';
 import Toggle from 'material-ui/Toggle';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import config from '../config';
 import axios from 'axios';
+import connectionHandler from '../services/connectionHandler';
+import Papa from 'papaparse';
+import CustomAlert from './CustomAlert';
 
 class CreateCampaign extends Component {
   constructor(){
@@ -18,12 +23,28 @@ class CreateCampaign extends Component {
       countryListValue: 1,
       createVideoToggle : false,
       countries: [],
+      title: '',
+      searchWords: [],
+      sites: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+      company: '',
+      address: '',
+      city: '',
+      url: '',
+      job: '',
+      messageTitle: '',
+      inquiry: '',
+      blackList: '',
     }
 
-    this.handleFile = this.handleFile.bind(this);
+    this.handleCsvSearchWords = this.handleCsvSearchWords.bind(this);
+    this.handleCsvSites = this.handleCsvSites.bind(this);
+    this.submitToServer = this.submitToServer.bind(this);
     this.runningMethodChange = this.runningMethodChange.bind(this);
     this.handleCountryChange = this.handleCountryChange.bind(this);
-    this.handleVideoToggle = this.handleVideoToggle.bind(this);
     this.handleUploadToggle = this.handleUploadToggle.bind(this);
   }
 
@@ -40,8 +61,28 @@ class CreateCampaign extends Component {
     });
   }
 
-  handleFile = function(){
-    console.log('new file');
+  handleCsvSearchWords = function(){
+    let that = this;
+    let csvFile = this.refs.csvSearchWords.files[0];
+    Papa.parse(csvFile, {
+    	complete: function(results) {
+        that.setState({
+          searchWords: results.data
+        });
+    	}
+    });
+  }
+
+  handleCsvSites = function(){
+    let that = this;
+    let csvFile = this.refs.csvSites.files[0];
+    Papa.parse(csvFile, {
+      complete: function(results) {
+        that.setState({
+          sites: results.data
+        });
+      }
+    });
   }
 
   runningMethodChange = (event, value) => {
@@ -52,7 +93,33 @@ class CreateCampaign extends Component {
 
   handleCountryChange = (event, index, value) => this.setState({countryListValue:value});
 
-  handleVideoToggle = () => this.setState({createVideoToggle: !this.state.createVideoToggle});
+  submitToServer = function(){
+    let data = {
+      title: this.state.title,
+      searchWords: this.state.searchWords.split(';'),
+      sites: this.state.sites,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      email: this.state.email,
+      phoneNumber: this.state.phoneNumber,
+      company: this.state.company,
+      address: this.state.address,
+      city: this.state.city,
+      url: this.state.url,
+      job: this.state.job,
+      messageTitle: this.state.messageTitle,
+      inquiry: this.state.inquiry,
+      blackList: this.state.blackList
+    }
+    connectionHandler.saveCampaign(data)
+    .then(function (response) {
+      console.log('nirel');
+      <CustomAlert content="Saved Successfully!" />
+    })
+    .catch(function (error) {
+      <CustomAlert content="Error has occured... Check logs!" />
+    });;
+  }
 
   render() {
 
@@ -82,7 +149,11 @@ class CreateCampaign extends Component {
       <div id='container'>
         <div>
           <Subheader style={{paddingLeft: '45%'}}>Campaign Info</Subheader>
-          <TextField hintText="campaign title" style={{marginLeft: '40%'}}/>
+          <TextField
+              hintText="campaign title"
+              style={{marginLeft: '40%'}}
+              value={this.state.title}
+              onChange={(e, val)=>this.setState({title: val})}/>
           <br />
           <br />
 
@@ -150,9 +221,9 @@ class CreateCampaign extends Component {
             />
             <div>
               {this.state.uploadCsvToggle ?
-                <TextField hintText="enter search words..." style={{marginLeft: '40%'}}/>
+                <TextField hintText="enter search words..." style={{marginLeft: '40%'}} value={this.state.searchWords} onChange={(e, val)=>this.setState({searchWords: val})}/>
                 :
-                <input type="file" accept=".csv" onChange={this.handleFile} ref='csvFile'/>
+                <input type="file" accept=".csv" onChange={this.handleCsvSearchWords} ref="csvSearchWords"/>
               }
 
             </div>
@@ -164,7 +235,7 @@ class CreateCampaign extends Component {
         {this.state.runningMethodState === "list websites" ?
           <div>
             <Subheader style={{paddingLeft: '45%'}}>upload websites</Subheader>
-              <input type="file" accept=".csv" onChange={this.handleFile} ref='csvFile'/>
+              <input type="file" accept=".csv" onChange={this.handleCsvSites} ref="csvSites"/>
             <Divider/>
           </div>
         : null}
@@ -174,36 +245,50 @@ class CreateCampaign extends Component {
             <TextField
               hintText="First name"
               floatingLabelText="first name"
+              value={this.state.firstName}
+              onChange={(e, val)=>this.setState({firstName: val})}
             />
             <br />
             <TextField
               hintText="Last name"
               floatingLabelText="Last name"
+              value={this.state.lastName}
+              onChange={(e, val)=>this.setState({lastName: val})}
             />
             <br />
             <TextField
               hintText="email"
               floatingLabelText="email"
+              value={this.state.email}
+              onChange={(e, val)=>this.setState({email: val})}
             />
             <br />
             <TextField
               hintText="phone number"
               floatingLabelText="phone number"
+              value={this.state.phoneNumber}
+              onChange={(e, val)=>this.setState({phoneNumber: val})}
             />
             <br />
             <TextField
               hintText="company"
               floatingLabelText="company"
+              value={this.state.company}
+              onChange={(e, val)=>this.setState({company: val})}
             />
             <br />
             <TextField
               hintText="address"
               floatingLabelText="address"
+              value={this.state.address}
+              onChange={(e, val)=>this.setState({address: val})}
             />
             <br />
             <TextField
               hintText="city"
               floatingLabelText="city"
+              value={this.state.city}
+              onChange={(e, val)=>this.setState({city: val})}
             />
             <br />
             <SelectField
@@ -213,7 +298,7 @@ class CreateCampaign extends Component {
             >
               {
                 this.state.countries.map((country, index) =>
-                <MenuItem value={index} primaryText={country} />
+                <MenuItem key={country} value={index} primaryText={country} />
               )}
             </SelectField>
           </div>
@@ -226,16 +311,22 @@ class CreateCampaign extends Component {
           <TextField
             hintText="URL"
             floatingLabelText="URL"
+            value={this.state.url}
+            onChange={(e, val)=>this.setState({url: val})}
           />
           <br />
           <TextField
             hintText="Job"
             floatingLabelText="Job"
+            value={this.state.job}
+            onChange={(e, val)=>this.setState({job: val})}
           />
           <br />
           <TextField
             hintText="Message title"
             floatingLabelText="Message title"
+            value={this.state.messageTitle}
+            onChange={(e, val)=>this.setState({messageTitle: val})}
           />
           </div>
           <Divider/>
@@ -250,6 +341,8 @@ class CreateCampaign extends Component {
               multiLine={true}
               rows={8}
               rowsMax={20}
+              value={this.state.inquiry}
+              onChange={(e, val)=>this.setState({inquiry: val})}
             />
             <br />
           </div>
@@ -262,7 +355,7 @@ class CreateCampaign extends Component {
             label="create a video"
             style={styles.toggle}
             toggle = {this.state.createVideoToggle}
-            onToggle= {this.handleVideoToggle}
+            onToggle= {()=>this.setState({createVideoToggle: !this.state.createVideoToggle})}
           />
           <Divider/>
         </div>
@@ -273,13 +366,17 @@ class CreateCampaign extends Component {
             <TextField
               hintText="Black list"
               floatingLabelText="Black list"
+              value={this.state.blackList}
+              onChange={(e, val)=>this.setState({blackList: val})}
             />
             <br />
             /*black list sites: {this.blacklisted}*/
           </div>
           <Divider/>
         </div>
-
+        <FloatingActionButton style={{marginLeft: '45%'}} onClick={this.submitToServer}>
+          <SendIcon />
+        </FloatingActionButton>
       </div>
     );
   }
