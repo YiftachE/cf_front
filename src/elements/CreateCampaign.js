@@ -95,8 +95,8 @@ class CreateCampaign extends Component {
 
   submitToServer = function(){
     let newCampaign = {
-      title: this.state.title,
-      searchWords: this.state.searchWords.split(';'),
+      name: this.state.title,
+      keywords: this.state.searchWords.split(';'),
       sites: this.state.sites,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
@@ -108,8 +108,7 @@ class CreateCampaign extends Component {
       url: this.state.url,
       job: this.state.job,
       messageTitle: this.state.messageTitle,
-      inquiry: this.state.inquiry,
-      blackList: this.state.blackList
+      message: this.state.inquiry
     }
 
     let storedCampaigns = JSON.parse(localStorage.getItem("campaigns"));

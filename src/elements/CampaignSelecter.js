@@ -27,7 +27,7 @@ class CampaignSelecter extends Component {
  getAllCampaignNames = () => {
    let storedCampaigns = JSON.parse(localStorage.getItem("campaigns"));
    let campaignsTitles = storedCampaigns.map(function(campaign) {
-     return campaign.title;
+     return campaign.name;
    });
 
    this.setState({campaignNames: campaignsTitles});
