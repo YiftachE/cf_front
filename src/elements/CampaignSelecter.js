@@ -12,11 +12,23 @@ class CampaignSelecter extends Component {
     super();
     this.state = {
       selectFieldValue: 1,
+      campgianNames: [],
     }
   }
 
- handleChange = (event, index, selectFieldValue) => this.setState({selectFieldValue});
+  componentWillMount(){
+    this.getAllCampaignNames();
+  }
 
+ handleChange = (event, index, selectFieldValue) => this.setState({selectFieldValue});
+ getAllCampaignNames = () => {
+   let storedCampaigns = JSON.parse(localStorage.getItem("campaigns"));
+   let campaignsTitles = storedCampaigns.map(function(campaign) {
+     return campaign.title;
+   });
+
+   this.setState({campaignNames: campaignsTitles});
+ };
   render() {
     const styles = {
       radioButton: {
@@ -63,9 +75,10 @@ class CampaignSelecter extends Component {
             value={this.state.selectFieldValue}
             onChange={this.handleChange}
           >
-            <MenuItem value={1} primaryText="Nirel" />
-            <MenuItem value={2} primaryText="Eden" />
-            <MenuItem value={3} primaryText="Yair" />
+            {
+              this.state.campaignNames.map((name, index) =>
+              <MenuItem key={name} value={index} primaryText={name} />
+            )}
          </SelectField>
        </div>
 
