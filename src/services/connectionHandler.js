@@ -9,4 +9,15 @@ handler.saveCampaign = function(data){
     });
 }
 
+handler.addToBlackList = function(data){
+  return axios.post(config.server + 'addToBlackList', {
+      campaign: data.campaign,
+      site: data.site
+    });
+}
+
+handler.getAllBlackListed = function(){
+  return axios.get(config.server + 'getAllBlackList');
+}
+
 export default handler;

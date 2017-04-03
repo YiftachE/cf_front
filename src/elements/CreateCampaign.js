@@ -38,14 +38,15 @@ class CreateCampaign extends Component {
       messageTitle: '',
       inquiry: '',
       blackList: '',
+      blackListed: []
     }
 
     this.handleCsvSearchWords = this.handleCsvSearchWords.bind(this);
     this.handleCsvSites = this.handleCsvSites.bind(this);
     this.submitToServer = this.submitToServer.bind(this);
-    this.runningMethodChange = this.runningMethodChange.bind(this);
     this.handleCountryChange = this.handleCountryChange.bind(this);
     this.handleUploadToggle = this.handleUploadToggle.bind(this);
+    this.addToBlackList = this.addToBlackList.bind(this);
   }
 
   componentWillMount(){
@@ -53,6 +54,11 @@ class CreateCampaign extends Component {
     axios.get(config.external.countries)
     .then((res) => that.setState({countries: res.data.countries}))
     .catch((err) => console.error(err));
+
+    connectionHandler.getAllBlackListed()
+    .then((res) => that.setState({blackListed: res.data}))
+    .catch((err) => console.error(err));
+
   }
 
   handleUploadToggle = () => {
@@ -85,18 +91,12 @@ class CreateCampaign extends Component {
     });
   }
 
-  runningMethodChange = (event, value) => {
-    this.setState({
-      runningMethodState : value
-    });
-  }
-
   handleCountryChange = (event, index, value) => this.setState({countryListValue:value});
 
   submitToServer = function(){
     let data = {
       title: this.state.title,
-      searchWords: this.state.searchWords.split(';'),
+      // searchWords: this.state.searchWords.split(';'),
       sites: this.state.sites,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
@@ -111,14 +111,50 @@ class CreateCampaign extends Component {
       inquiry: this.state.inquiry,
       blackList: this.state.blackList
     }
-    connectionHandler.saveCampaign(data)
+    localStorage.setItem('title', data.title);
+    localStorage.setItem('sites', data.sites);
+    localStorage.setItem('firstName', data.firstName);
+    localStorage.setItem('lastName', data.lastName);
+    localStorage.setItem('email', data.email);
+    localStorage.setItem('phoneNumber', data.phoneNumber);
+    localStorage.setItem('company', data.company);
+    localStorage.setItem('address', data.address);
+    localStorage.setItem('city', data.city);
+    localStorage.setItem('url', data.url);
+    localStorage.setItem('job', data.job);
+    localStorage.setItem('messageTitle', data.messageTitle);
+    localStorage.setItem('inquiry', data.inquiry);
+
+    if(data.state.searchWords !== ''){
+      localStorage.setItem('searchWords', this.state.searchWords.split(';'));
+    }
+
+    // connectionHandler.saveCampaign(data)
+    // .then(function (response) {
+    //   console.log('nirel');
+    //   <CustomAlert content="Saved Successfully!" />
+    // })
+    // .catch(function (error) {
+    //   <CustomAlert content="Error has occured... Check logs!" />
+    // });
+  }
+
+  addToBlackList = function(){
+    var that = this;
+    let data = {
+      campaign: this.state.campaign,
+      site: this.state.blackList
+    }
+    this.setState({blackList: ''});
+    connectionHandler.addToBlackList(data)
     .then(function (response) {
-      console.log('nirel');
-      <CustomAlert content="Saved Successfully!" />
+      let prevSites = that.state.blackListed;
+      prevSites.push(response.data.site);
+      that.setState({blackListed: prevSites});
     })
-    .catch(function (error) {
-      <CustomAlert content="Error has occured... Check logs!" />
-    });;
+    .catch(function (err) {
+      console.error(err);
+    });
   }
 
   render() {
@@ -187,30 +223,6 @@ class CreateCampaign extends Component {
           <Divider/>
         </div>
 
-        <div>
-          <Subheader style={{paddingLeft: '45%'}}>Running method</Subheader>
-          <RadioButtonGroup
-             style={styles.radioButtonGroup}
-             id='radioGroup'
-             name="keyword"
-             defaultSelected="keyword"
-             onChange={this.runningMethodChange}
-             >
-           <RadioButton
-             value="keyword"
-             label="Run with keyword"
-             style={styles.radioButton}
-           />
-           <RadioButton
-             value="list websites"
-             label="Run with list websites"
-             style={styles.radioButton}
-           />
-          </RadioButtonGroup>
-          <Divider/>
-        </div>
-
-        {this.state.runningMethodState === "keyword" ?
           <div>
             <Subheader style={{paddingLeft: '45%'}}>enter search words...</Subheader>
             <Toggle
@@ -230,15 +242,7 @@ class CreateCampaign extends Component {
 
           <Divider/>
           </div>
-        : null}
 
-        {this.state.runningMethodState === "list websites" ?
-          <div>
-            <Subheader style={{paddingLeft: '45%'}}>upload websites</Subheader>
-              <input type="file" accept=".csv" onChange={this.handleCsvSites} ref="csvSites"/>
-            <Divider/>
-          </div>
-        : null}
         <div>
           <Subheader style={{paddingLeft: '45%'}}>Contact Info</Subheader>
           <div style={{marginLeft: '40%'}}>
@@ -350,17 +354,6 @@ class CreateCampaign extends Component {
         </div>
 
         <div>
-          <Subheader style={{paddingLeft: '45%'}}>Create a video</Subheader>
-          <Toggle
-            label="create a video"
-            style={styles.toggle}
-            toggle = {this.state.createVideoToggle}
-            onToggle= {()=>this.setState({createVideoToggle: !this.state.createVideoToggle})}
-          />
-          <Divider/>
-        </div>
-
-        <div>
           <Subheader style={{paddingLeft: '45%'}}>Black list</Subheader>
           <div style={{marginLeft: '40%'}}>
             <TextField
@@ -369,8 +362,16 @@ class CreateCampaign extends Component {
               value={this.state.blackList}
               onChange={(e, val)=>this.setState({blackList: val})}
             />
+            <FloatingActionButton style={{marginLeft: '45%'}} onClick={this.addToBlackList}>
+              Add
+            </FloatingActionButton>
             <br />
-            /*black list sites: {this.blacklisted}*/
+            <ul style={{listStyle:'none'}}>
+              {
+                this.state.blackListed.map((site, index) =>
+                <li key={index}> {site} </li>
+              )}
+            </ul>
           </div>
           <Divider/>
         </div>
