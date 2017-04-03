@@ -94,9 +94,14 @@ class CreateCampaign extends Component {
   handleCountryChange = (event, index, value) => this.setState({countryListValue:value});
 
   submitToServer = function(){
+    if(!this.state.uploadCsvToggle){
+      let splittedSearchWords = this.state.searchWords.split(';');
+      this.setState({searchWords: splittedSearchWords});
+    }
+    
     let newCampaign = {
       name: this.state.title,
-      keywords: this.state.searchWords.split(';'),
+      keywords: this.state.searchWords,
       sites: this.state.sites,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
