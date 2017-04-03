@@ -98,7 +98,7 @@ class CreateCampaign extends Component {
       let splittedSearchWords = this.state.searchWords.split(';');
       this.setState({searchWords: splittedSearchWords});
     }
-    
+
     let newCampaign = {
       name: this.state.title,
       keywords: this.state.searchWords,
@@ -124,6 +124,7 @@ class CreateCampaign extends Component {
       localStorage.setItem("campaigns", JSON.stringify([newCampaign]));
     }
 
+    alert('saved Successfully!');
 
     // localStorage.setItem('title', data.title);
     // localStorage.setItem('sites', data.sites);
