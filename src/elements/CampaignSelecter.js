@@ -102,7 +102,7 @@ class CampaignSelecter extends Component {
 
        <div style={{marginLeft: '40%'}}>
          <SelectField
-            floatingLabelText="limis"
+            floatingLabelText="limit"
             value={this.state.limitValue}
             onChange={this.handleLimitChange}
           >

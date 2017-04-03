@@ -31,9 +31,6 @@ class TabsController extends Component {
           <Tab label="Create New Campaign" >
             <CreateCampaign/>
           </Tab>
-          <Tab label="Edit Campaign" >
-
-          </Tab>
         </Tabs>
       </div>
     );
