@@ -82,10 +82,8 @@ class CampaignSelecter extends Component {
          </SelectField>
        </div>
 
-       <div style={{marginLeft: '30%'}}>
+       <div style={{marginLeft: '45%'}}>
        <FlatButton label="Start" style={styles.buttons}/>
-       <FlatButton label="Continue" style={styles.buttons}/>
-       <FlatButton label="Stop/Pause" disabled={true} style={styles.buttons}/>
        </div>
 
        <Divider/>
