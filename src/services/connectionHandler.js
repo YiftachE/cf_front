@@ -20,4 +20,11 @@ handler.getAllBlackListed = function(){
   return axios.get(config.server + 'getAllBlackList');
 }
 
+handler.startAlgo = function(campaign, limit){
+  return axios.post(config.server + 'start', {
+      campaign: campaign,
+      limit: limit
+    });
+}
+
 export default handler;

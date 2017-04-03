@@ -5,6 +5,7 @@ import Divider from 'material-ui/Divider';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
+import connectionHandler from '../services/connectionHandler';
 import '../styles/campaignSelecter.css';
 
 class CampaignSelecter extends Component {
@@ -13,6 +14,7 @@ class CampaignSelecter extends Component {
     this.state = {
       selectFieldValue: 1,
       campgianNames: [],
+      limit: 0,
     }
   }
 
@@ -21,6 +23,7 @@ class CampaignSelecter extends Component {
   }
 
  handleChange = (event, index, selectFieldValue) => this.setState({selectFieldValue});
+
  getAllCampaignNames = () => {
    let storedCampaigns = JSON.parse(localStorage.getItem("campaigns"));
    let campaignsTitles = storedCampaigns.map(function(campaign) {
@@ -28,6 +31,19 @@ class CampaignSelecter extends Component {
    });
 
    this.setState({campaignNames: campaignsTitles});
+ };
+
+ sendStart = () => {
+   let selectedCampaign = JSON.parse(localStorage.getItem("campaigns"))[this.state.selectFieldValue];
+   connectionHandler.startAlgo(selectedCampaign, 10)
+   .then(function(){
+     console.log('sent to start');
+   })
+   .catch(function(err){
+     if(err){
+       console.error(err);
+     }
+   });
  };
   render() {
     const styles = {
@@ -83,7 +99,7 @@ class CampaignSelecter extends Component {
        </div>
 
        <div style={{marginLeft: '45%'}}>
-       <FlatButton label="Start" style={styles.buttons}/>
+       <FlatButton label="Start" style={styles.buttons} onClick={this.sendStart}/>
        </div>
 
        <Divider/>
