@@ -131,32 +131,37 @@ class CampaignSelecter extends Component {
 
        <Divider/>
 
-       <div>
-        <span>search words: {this.state.storedCampaigns[this.state.selectFieldValue].keywords}</span>
-        <br />
-        <span>first name: {this.state.storedCampaigns[this.state.selectFieldValue].firstName}</span>
-        <br />
-        <span>lsat name: {this.state.storedCampaigns[this.state.selectFieldValue].lastName}</span>
-        <br />
-        <span>email: {this.state.storedCampaigns[this.state.selectFieldValue].email}</span>
-        <br />
-        <span>phone number: {this.state.storedCampaigns[this.state.selectFieldValue].phoneNumber}</span>
-        <br />
-        <span>company: {this.state.storedCampaigns[this.state.selectFieldValue].company}</span>
-        <br />
-        <span>address: {this.state.storedCampaigns[this.state.selectFieldValue].address}</span>
-        <br />
-        <span>city: {this.state.storedCampaigns[this.state.selectFieldValue].city}</span>
-        <br />
-        <span>country: {this.state.storedCampaigns[this.state.selectFieldValue].country}</span>
-        <br />
-        <span>URL: {this.state.storedCampaigns[this.state.selectFieldValue].URL}</span>
-        <br />
-        <span>job: {this.state.storedCampaigns[this.state.selectFieldValue].job}</span>
-        <br />
-        <span>message title: {this.state.storedCampaigns[this.state.selectFieldValue].messageTitle}</span>
+       {
+         this.state.storedCampaigns[this.state.selectFieldValue]?
+         <div>
+          <span>search words: {this.state.storedCampaigns[this.state.selectFieldValue].keywords}</span>
+          <br />
+          <span>first name: {this.state.storedCampaigns[this.state.selectFieldValue].firstName}</span>
+          <br />
+          <span>lsat name: {this.state.storedCampaigns[this.state.selectFieldValue].lastName}</span>
+          <br />
+          <span>email: {this.state.storedCampaigns[this.state.selectFieldValue].email}</span>
+          <br />
+          <span>phone number: {this.state.storedCampaigns[this.state.selectFieldValue].phoneNumber}</span>
+          <br />
+          <span>company: {this.state.storedCampaigns[this.state.selectFieldValue].company}</span>
+          <br />
+          <span>address: {this.state.storedCampaigns[this.state.selectFieldValue].address}</span>
+          <br />
+          <span>city: {this.state.storedCampaigns[this.state.selectFieldValue].city}</span>
+          <br />
+          <span>country: {this.state.storedCampaigns[this.state.selectFieldValue].country}</span>
+          <br />
+          <span>URL: {this.state.storedCampaigns[this.state.selectFieldValue].URL}</span>
+          <br />
+          <span>job: {this.state.storedCampaigns[this.state.selectFieldValue].job}</span>
+          <br />
+          <span>message title: {this.state.storedCampaigns[this.state.selectFieldValue].messageTitle}</span>
+         </div>
+        :
+        null
+       }
        </div>
-      </div>
     );
   }
 }
