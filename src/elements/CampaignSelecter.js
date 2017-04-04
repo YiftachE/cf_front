@@ -16,6 +16,7 @@ class CampaignSelecter extends Component {
       limitValue: 100,
       campgianNames: [],
       limit: 0,
+      campaignNamesElements: []
     }
   }
 
@@ -28,11 +29,18 @@ class CampaignSelecter extends Component {
 
  getAllCampaignNames = () => {
    let storedCampaigns = JSON.parse(localStorage.getItem("campaigns"));
-   let campaignsTitles = storedCampaigns.map(function(campaign) {
-     return campaign.name;
-   });
+   if(storedCampaigns){
+     var campaignsTitles = storedCampaigns.map(function(campaign) {
+       return campaign.name;
+     });
 
-   this.setState({campaignNames: campaignsTitles});
+     this.setState({campaignNames: campaignsTitles});
+     let campaignNamesElements =   campaignsTitles.map((name, index) =>
+       <MenuItem key={name} value={index} primaryText={name} />
+     );
+
+     this.setState({campaignNamesElements: campaignNamesElements});
+   }
  };
 
  sendStart = () => {
@@ -93,10 +101,7 @@ class CampaignSelecter extends Component {
             value={this.state.selectFieldValue}
             onChange={this.handleChange}
           >
-            {
-              this.state.campaignNames.map((name, index) =>
-              <MenuItem key={name} value={index} primaryText={name} />
-            )}
+            {this.state.campaignNamesElements}
          </SelectField>
        </div>
 
