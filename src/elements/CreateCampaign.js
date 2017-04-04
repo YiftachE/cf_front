@@ -42,7 +42,6 @@ class CreateCampaign extends Component {
     }
 
     this.handleCsvSearchWords = this.handleCsvSearchWords.bind(this);
-    this.handleCsvSites = this.handleCsvSites.bind(this);
     this.submitToServer = this.submitToServer.bind(this);
     this.handleCountryChange = this.handleCountryChange.bind(this);
     this.handleUploadToggle = this.handleUploadToggle.bind(this);
@@ -76,18 +75,6 @@ class CreateCampaign extends Component {
           searchWords: results.data
         });
     	}
-    });
-  }
-
-  handleCsvSites = function(){
-    let that = this;
-    let csvFile = this.refs.csvSites.files[0];
-    Papa.parse(csvFile, {
-      complete: function(results) {
-        that.setState({
-          sites: results.data
-        });
-      }
     });
   }
 
