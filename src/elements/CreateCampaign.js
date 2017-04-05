@@ -72,7 +72,7 @@ class CreateCampaign extends Component {
     Papa.parse(csvFile, {
     	complete: function(results) {
         that.setState({
-          searchWords: results.data
+          searchWords: results.data.toString().split(',;,')
         });
     	}
     });
@@ -81,7 +81,7 @@ class CreateCampaign extends Component {
   handleCountryChange = (event, index, value) => this.setState({countryListValue:value});
 
   submitToServer = function(){
-    if(!this.state.uploadCsvToggle){
+    if(this.state.uploadCsvToggle){
       let splittedSearchWords = this.state.searchWords.split(';');
       this.setState({searchWords: splittedSearchWords});
     }
@@ -113,32 +113,6 @@ class CreateCampaign extends Component {
 
     alert('saved Successfully!');
 
-    // localStorage.setItem('title', data.title);
-    // localStorage.setItem('sites', data.sites);
-    // localStorage.setItem('firstName', data.firstName);
-    // localStorage.setItem('lastName', data.lastName);
-    // localStorage.setItem('email', data.email);
-    // localStorage.setItem('phoneNumber', data.phoneNumber);
-    // localStorage.setItem('company', data.company);
-    // localStorage.setItem('address', data.address);
-    // localStorage.setItem('city', data.city);
-    // localStorage.setItem('url', data.url);
-    // localStorage.setItem('job', data.job);
-    // localStorage.setItem('messageTitle', data.messageTitle);
-    // localStorage.setItem('inquiry', data.inquiry);
-    //
-    // if(this.state.searchWords !== ''){
-    //   localStorage.setItem('searchWords', this.state.searchWords.split(';'));
-    // }
-
-    // connectionHandler.saveCampaign(data)
-    // .then(function (response) {
-    //   console.log('nirel');
-    //   <CustomAlert content="Saved Successfully!" />
-    // })
-    // .catch(function (error) {
-    //   <CustomAlert content="Error has occured... Check logs!" />
-    // });
   }
 
   addToBlackList = function(){
