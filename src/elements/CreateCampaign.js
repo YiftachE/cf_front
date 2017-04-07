@@ -81,14 +81,9 @@ class CreateCampaign extends Component {
   handleCountryChange = (event, index, value) => this.setState({countryListValue:value});
 
   submitToServer = function(){
-    if(this.state.uploadCsvToggle){
-      let splittedSearchWords = this.state.searchWords.split(';');
-      this.setState({searchWords: splittedSearchWords});
-    }
-
     let newCampaign = {
       name: this.state.title,
-      keywords: this.state.searchWords,
+      keywords: [],
       sites: this.state.sites,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
@@ -101,6 +96,14 @@ class CreateCampaign extends Component {
       job: this.state.job,
       messageTitle: this.state.messageTitle,
       message: this.state.inquiry
+    }
+
+    if(this.state.uploadCsvToggle){
+      let splittedSearchWords = this.state.searchWords.split(';');
+      this.setState({searchWords: splittedSearchWords});
+      newCampaign.keywords = splittedSearchWords;
+    }else{
+      newCampaign.keywords = this.state.searchWords;
     }
 
     let storedCampaigns = JSON.parse(localStorage.getItem("campaigns"));

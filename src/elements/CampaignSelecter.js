@@ -134,7 +134,11 @@ class CampaignSelecter extends Component {
        {
          this.state.storedCampaigns[this.state.selectFieldValue]?
          <div>
-          <span>search words: {this.state.storedCampaigns[this.state.selectFieldValue].keywords}</span>
+          <span>search words: {
+            this.state.storedCampaigns[this.state.selectFieldValue].keywords.map(function(kw){
+              return (kw + ' ,');
+            })
+          }</span>
           <br />
           <span>first name: {this.state.storedCampaigns[this.state.selectFieldValue].firstName}</span>
           <br />
