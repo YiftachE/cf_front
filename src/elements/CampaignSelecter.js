@@ -156,7 +156,7 @@ class CampaignSelecter extends Component {
           <br />
           <span>country: {this.state.storedCampaigns[this.state.selectFieldValue].country}</span>
           <br />
-          <span>URL: {this.state.storedCampaigns[this.state.selectFieldValue].URL}</span>
+          <span>URL: {this.state.storedCampaigns[this.state.selectFieldValue].url}</span>
           <br />
           <span>job: {this.state.storedCampaigns[this.state.selectFieldValue].job}</span>
           <br />
