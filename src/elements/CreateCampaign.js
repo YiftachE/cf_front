@@ -95,7 +95,8 @@ class CreateCampaign extends Component {
       url: this.state.url,
       job: this.state.job,
       messageTitle: this.state.messageTitle,
-      message: this.state.inquiry
+      message: this.state.inquiry,
+      country: this.state.countries[this.state.countryListValue]
     }
 
     if(this.state.uploadCsvToggle){
